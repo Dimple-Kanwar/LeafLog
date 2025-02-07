@@ -1,0 +1,8 @@
+{
+  "arbitrum-sepolia": {
+    "USD Coin": {
+      "address": "0x4Db297388AD5a0AB6ECEe761021E0C1c14fc49E5",
+      "startBlock": 106029426
+    }
+  }
+}
