@@ -1,7 +1,7 @@
 import {
   AdminChanged as AdminChangedEvent,
   Upgraded as UpgradedEvent
-} from "../generated/USD Coin/USD Coin"
+} from "../generated/USDC/USDC"
 import { AdminChanged, Upgraded } from "../generated/schema"
 
 export function handleAdminChanged(event: AdminChangedEvent): void {

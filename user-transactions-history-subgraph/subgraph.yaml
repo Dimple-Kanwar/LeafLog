@@ -5,11 +5,11 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: USD Coin
+    name: USDC
     network: arbitrum-sepolia
     source:
       address: "0x4Db297388AD5a0AB6ECEe761021E0C1c14fc49E5"
-      abi: USD Coin
+      abi: USDC
       startBlock: 106029426
     mapping:
       kind: ethereum/events
@@ -19,11 +19,11 @@ dataSources:
         - AdminChanged
         - Upgraded
       abis:
-        - name: USD Coin
-          file: ./abis/USD Coin.json
+        - name: USDC
+          file: ./abis/USDC.json
       eventHandlers:
         - event: AdminChanged(address,address)
           handler: handleAdminChanged
         - event: Upgraded(address)
           handler: handleUpgraded
-      file: ./src/usd-coin.ts
+      file: ./src/usdc.ts

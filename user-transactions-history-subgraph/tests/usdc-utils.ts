@@ -1,6 +1,6 @@
 import { newMockEvent } from "matchstick-as"
 import { ethereum, Address } from "@graphprotocol/graph-ts"
-import { AdminChanged, Upgraded } from "../generated/USD Coin/USD Coin"
+import { AdminChanged, Upgraded } from "../generated/USDC/USDC"
 
 export function createAdminChangedEvent(
   previousAdmin: Address,

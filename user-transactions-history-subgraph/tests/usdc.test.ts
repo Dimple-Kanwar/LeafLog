@@ -8,9 +8,9 @@ import {
 } from "matchstick-as/assembly/index"
 import { Address } from "@graphprotocol/graph-ts"
 import { AdminChanged } from "../generated/schema"
-import { AdminChanged as AdminChangedEvent } from "../generated/USD Coin/USD Coin"
-import { handleAdminChanged } from "../src/usd-coin"
-import { createAdminChangedEvent } from "./usd-coin-utils"
+import { AdminChanged as AdminChangedEvent } from "../generated/USDC/USDC"
+import { handleAdminChanged } from "../src/usdc"
+import { createAdminChangedEvent } from "./usdc-utils"
 
 // Tests structure (matchstick-as >=0.5.0)
 // https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0
