@@ -1,16 +1,25 @@
-type AdminChanged @entity(immutable: true) {
-  id: Bytes!
-  previousAdmin: Bytes! # address
-  newAdmin: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type Token @entity {
+  id: ID!
+  owner: Owner
+  transfers: [Transfer!]! @derivedFrom(field: "token")
+  contract: Contract
 }
 
-type Upgraded @entity(immutable: true) {
-  id: Bytes!
-  implementation: Bytes! # address
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+type Contract @entity {
+  # token address as id
+  id: ID!
+  name: String
+  symbol: String
+}
+
+type Transfer @entity {
+  id: ID!
+  token: Token!
+  # Empty from is minting
+  from: Owner
+  # Empty to is burning
+  to: Owner
+  timestamp: BigInt!
+  block: BigInt!
+  transactionHash: String!
 }
