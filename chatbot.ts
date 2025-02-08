@@ -17,6 +17,7 @@ import * as dotenv from "dotenv";
 import * as fs from "fs";
 import * as readline from "readline";
 import { TransactionHistoryService } from "./services/transactionHistory";
+import { z } from "zod";
 
 dotenv.config();
 
@@ -120,15 +121,11 @@ tools.push({
   type: "function",
   name: "generate_transaction_report",
   description: "Generate a PDF report of transaction history and optionally email it",
-  schema: {
-    type: "object",
-    properties: {
-      address: { type: "string", description: "Wallet address to generate report for" },
-      duration: { type: "number", description: "Duration in days for the report" },
-      email: { type: "string", description: "Optional email address to send the report to" }
-    },
-    required: ["address", "duration"]
-  },
+  schema: z.object({
+    address: z.string().describe("Wallet address to generate report for"),
+    duration: z.number().describe("Duration in days for the report"),
+    email: z.string().optional().describe("Optional email address to send the report to")
+  }),
   invoke: async ({ address, duration, email }: { address: string; duration: number; email?: string }) => {
     const currentBlock = await walletProvider.wallet.provider.getBlockNumber();
     const blocksPerDay = 7200; // approximate
