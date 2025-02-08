@@ -126,7 +126,8 @@ tools.push({
     email: z.string().optional().describe("Optional email address to send the report to")
   }),
   func: async ({ address, duration, email }: { address: string; duration: number; email?: string }) => {
-    const currentBlock = await walletProvider.provider.getBlockNumber();
+    const provider = agentkit.getProvider();
+    const currentBlock = await provider.getBlockNumber();
     const blocksPerDay = 7200; // approximate
     const fromBlock = currentBlock - (duration * blocksPerDay);
     
