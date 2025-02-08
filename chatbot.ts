@@ -117,10 +117,20 @@ const transactionService = new TransactionHistoryService(config.networkId.includ
 
 // Add transaction history tool
 tools.push({
+  type: "function",
   name: "generate_transaction_report",
   description: "Generate a PDF report of transaction history and optionally email it",
-  func: async ({ address, duration, email }: { address: string; duration: number; email?: string }) => {
-    const currentBlock = await agentkit.provider.getBlockNumber();
+  schema: {
+    type: "object",
+    properties: {
+      address: { type: "string", description: "Wallet address to generate report for" },
+      duration: { type: "number", description: "Duration in days for the report" },
+      email: { type: "string", description: "Optional email address to send the report to" }
+    },
+    required: ["address", "duration"]
+  },
+  invoke: async ({ address, duration, email }: { address: string; duration: number; email?: string }) => {
+    const currentBlock = await walletProvider.getProvider().getBlockNumber();
     const blocksPerDay = 7200; // approximate
     const fromBlock = currentBlock - (duration * blocksPerDay);
     
