@@ -16,6 +16,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import * as dotenv from "dotenv";
 import * as fs from "fs";
 import * as readline from "readline";
+import { TransactionHistoryService } from "./services/transactionHistory";
 
 dotenv.config();
 
