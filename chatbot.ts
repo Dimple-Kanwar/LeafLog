@@ -16,6 +16,8 @@ import { ChatOpenAI } from "@langchain/openai";
 import * as dotenv from "dotenv";
 import * as fs from "fs";
 import * as readline from "readline";
+import { TransactionHistoryService } from "./services/transactionHistory";
+import { z } from "zod";
 
 dotenv.config();
 
@@ -111,6 +113,37 @@ async function initializeAgent() {
     });
 
     const tools = await getLangChainTools(agentkit);
+const transactionService = new TransactionHistoryService(config.networkId.includes('base') ? 
+  'https://base-sepolia.g.alchemy.com/v2/demo' : 'https://eth-sepolia.g.alchemy.com/v2/demo');
+
+// Add transaction history tool
+tools.push({
+  type: "function",
+  name: "generate_transaction_report",
+  description: "Generate a PDF report of transaction history and optionally email it",
+  schema: z.object({
+    address: z.string().describe("Wallet address to generate report for"),
+    duration: z.number().describe("Duration in days for the report"),
+    email: z.string().optional().describe("Optional email address to send the report to")
+  }),
+  invoke: async ({ address, duration, email }: { address: string; duration: number; email?: string }) => {
+    const currentBlock = await walletProvider.wallet.provider.getBlockNumber();
+    const blocksPerDay = 7200; // approximate
+    const fromBlock = currentBlock - (duration * blocksPerDay);
+    
+    const txData = await transactionService.getTransactions(address, fromBlock, currentBlock);
+    const pdfPath = `./transaction_history_${address}.pdf`;
+    
+    await transactionService.generatePDF(txData, pdfPath);
+    
+    if (email) {
+      await transactionService.emailPDF(pdfPath, email);
+      return `Transaction history PDF generated and sent to ${email}`;
+    }
+    
+    return `Transaction history PDF generated at ${pdfPath}`;
+  }
+});
 
     // Store buffered conversation history in memory
     const memory = new MemorySaver();
