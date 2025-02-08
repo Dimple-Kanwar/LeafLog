@@ -119,7 +119,7 @@ const transactionService = new TransactionHistoryService(config.networkId.includ
 tools.push({
   name: "generate_transaction_report",
   description: "Generate a PDF report of transaction history and optionally email it",
-  func: async ({ address, duration, email }) => {
+  func: async ({ address, duration, email }: { address: string; duration: number; email?: string }) => {
     const currentBlock = await agentkit.provider.getBlockNumber();
     const blocksPerDay = 7200; // approximate
     const fromBlock = currentBlock - (duration * blocksPerDay);
