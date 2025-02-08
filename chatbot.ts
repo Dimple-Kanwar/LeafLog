@@ -164,7 +164,7 @@ async function initializeAgent() {
         duration: number;
         email?: string;
       }) => {
-        const currentBlock = await agentkit.ethereumProvider.getBlockNumber();
+        const currentBlock = await walletProvider.
         const blocksPerDay = 7200; // approximate
         const fromBlock = currentBlock - duration * blocksPerDay;
 
