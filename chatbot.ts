@@ -9,6 +9,7 @@ import {
   pythActionProvider,
 } from "@coinbase/agentkit";
 import { getLangChainTools } from "@coinbase/agentkit-langchain";
+import { tool } from "@langchain/core/tools";
 import { HumanMessage } from "@langchain/core/messages";
 import { MemorySaver } from "@langchain/langgraph";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
@@ -125,7 +126,7 @@ const transactionHistorySchema = z.object({
 
 // Add transaction history tool
 const transactionHistoryTool = tool(
-  async ({ address, duration, email }) => {
+  async ({ address, duration, email }: { address: string; duration: number; email?: string }) => {
     const currentBlock = await walletProvider.provider.getBlockNumber();
     const blocksPerDay = 7200; // approximate
     const fromBlock = currentBlock - (duration * blocksPerDay);
