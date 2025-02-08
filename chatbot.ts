@@ -130,7 +130,7 @@ tools.push({
     required: ["address", "duration"]
   },
   invoke: async ({ address, duration, email }: { address: string; duration: number; email?: string }) => {
-    const currentBlock = await walletProvider.getProvider().getBlockNumber();
+    const currentBlock = await walletProvider.wallet.provider.getBlockNumber();
     const blocksPerDay = 7200; // approximate
     const fromBlock = currentBlock - (duration * blocksPerDay);
     
