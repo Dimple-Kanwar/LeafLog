@@ -17,10 +17,28 @@ export class TransactionHistoryService {
       toBlock,
       address
     });
-    return transactions;
+    
+    // Check for NFT transfers (ERC721/ERC1155) and token airdrops
+    const nftTransfers = transactions.filter(tx => 
+      tx.topics && (
+        tx.topics[0] === '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef' || // ERC721
+        tx.topics[0] === '0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62'    // ERC1155
+      )
+    );
+    
+    const airdrops = transactions.filter(tx =>
+      tx.topics && tx.topics[0] === '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef' && // ERC20
+      tx.topics[1] === '0x0000000000000000000000000000000000000000000000000000000000000000'      // From zero address
+    );
+
+    return {
+      transactions,
+      nftTransfers,
+      airdrops
+    };
   }
 
-  async generatePDF(transactions: any[], outputPath: string) {
+  async generatePDF(data: { transactions: any[], nftTransfers: any[], airdrops: any[] }, outputPath: string) {
     const doc = new PDFDocument();
     const writeStream = fs.createWriteStream(outputPath);
     doc.pipe(writeStream);
@@ -28,7 +46,35 @@ export class TransactionHistoryService {
     doc.fontSize(20).text('Transaction History Report', { align: 'center' });
     doc.moveDown();
 
-    transactions.forEach((tx, index) => {
+    // NFT Transfers section
+    if (data.nftTransfers.length > 0) {
+      doc.fontSize(16).text('NFT Transfers', { align: 'left' });
+      data.nftTransfers.forEach((tx, index) => {
+        doc.fontSize(12).text(`NFT Transfer ${index + 1}:`);
+        doc.fontSize(10)
+          .text(`Hash: ${tx.transactionHash}`)
+          .text(`Block: ${tx.blockNumber}`)
+          .text(`Contract: ${tx.address}`);
+        doc.moveDown();
+      });
+    }
+
+    // Airdrops section
+    if (data.airdrops.length > 0) {
+      doc.fontSize(16).text('Token Airdrops', { align: 'left' });
+      data.airdrops.forEach((tx, index) => {
+        doc.fontSize(12).text(`Airdrop ${index + 1}:`);
+        doc.fontSize(10)
+          .text(`Hash: ${tx.transactionHash}`)
+          .text(`Block: ${tx.blockNumber}`)
+          .text(`Token Contract: ${tx.address}`);
+        doc.moveDown();
+      });
+    }
+
+    // Regular transactions
+    doc.fontSize(16).text('Other Transactions', { align: 'left' });
+    data.transactions.forEach((tx, index) => {
       doc.fontSize(12).text(`Transaction ${index + 1}:`);
       doc.fontSize(10)
         .text(`Hash: ${tx.transactionHash}`)
