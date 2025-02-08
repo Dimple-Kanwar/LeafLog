@@ -119,9 +119,9 @@ const transactionService = new TransactionHistoryService(config.networkId.includ
 
 // Define transaction history schema
 const transactionHistorySchema = z.object({
-  address: z.string().describe("Wallet address to generate report for"),
-  duration: z.number().describe("Duration in days for the report"),
-  email: z.string().optional().describe("Optional email address to send the report to")
+  address: z.string().regex(/^0x[a-fA-F0-9]{40}$/).describe("Ethereum wallet address to generate report for"),
+  duration: z.number().int().positive().describe("Duration in days for the report (must be positive)"),
+  email: z.string().email().optional().describe("Optional email address to send the report to")
 });
 
 // Add transaction history tool
