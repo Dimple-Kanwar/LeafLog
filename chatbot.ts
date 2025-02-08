@@ -111,6 +111,31 @@ async function initializeAgent() {
     });
 
     const tools = await getLangChainTools(agentkit);
+const transactionService = new TransactionHistoryService(config.networkId.includes('base') ? 
+  'https://base-sepolia.g.alchemy.com/v2/demo' : 'https://eth-sepolia.g.alchemy.com/v2/demo');
+
+// Add transaction history tool
+tools.push({
+  name: "generate_transaction_report",
+  description: "Generate a PDF report of transaction history and optionally email it",
+  func: async ({ address, duration, email }) => {
+    const currentBlock = await agentkit.provider.getBlockNumber();
+    const blocksPerDay = 7200; // approximate
+    const fromBlock = currentBlock - (duration * blocksPerDay);
+    
+    const transactions = await transactionService.getTransactions(address, fromBlock, currentBlock);
+    const pdfPath = `./transaction_history_${address}.pdf`;
+    
+    await transactionService.generatePDF(transactions, pdfPath);
+    
+    if (email) {
+      await transactionService.emailPDF(pdfPath, email);
+      return `Transaction history PDF generated and sent to ${email}`;
+    }
+    
+    return `Transaction history PDF generated at ${pdfPath}`;
+  }
+});
 
     // Store buffered conversation history in memory
     const memory = new MemorySaver();
