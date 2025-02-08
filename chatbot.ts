@@ -123,10 +123,10 @@ tools.push({
     const blocksPerDay = 7200; // approximate
     const fromBlock = currentBlock - (duration * blocksPerDay);
     
-    const transactions = await transactionService.getTransactions(address, fromBlock, currentBlock);
+    const txData = await transactionService.getTransactions(address, fromBlock, currentBlock);
     const pdfPath = `./transaction_history_${address}.pdf`;
     
-    await transactionService.generatePDF(transactions, pdfPath);
+    await transactionService.generatePDF(txData, pdfPath);
     
     if (email) {
       await transactionService.emailPDF(pdfPath, email);
