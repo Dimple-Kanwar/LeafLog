@@ -9,6 +9,7 @@ import {
   pythActionProvider,
 } from "@coinbase/agentkit";
 import { getLangChainTools } from "@coinbase/agentkit-langchain";
+import { tool } from "@langchain/core/tools";
 import { HumanMessage } from "@langchain/core/messages";
 import { MemorySaver } from "@langchain/langgraph";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
@@ -116,18 +117,17 @@ async function initializeAgent() {
 const transactionService = new TransactionHistoryService(config.networkId.includes('base') ? 
   'https://base-sepolia.g.alchemy.com/v2/demo' : 'https://eth-sepolia.g.alchemy.com/v2/demo');
 
+// Define transaction history schema
+const transactionHistorySchema = z.object({
+  address: z.string().describe("Wallet address to generate report for"),
+  duration: z.number().describe("Duration in days for the report"),
+  email: z.string().optional().describe("Optional email address to send the report to")
+});
+
 // Add transaction history tool
-tools.push({
-  type: "function",
-  name: "generate_transaction_report",
-  description: "Generate a PDF report of transaction history and optionally email it",
-  schema: z.object({
-    address: z.string().describe("Wallet address to generate report for"),
-    duration: z.number().describe("Duration in days for the report"),
-    email: z.string().optional().describe("Optional email address to send the report to")
-  }),
-  invoke: async ({ address, duration, email }: { address: string; duration: number; email?: string }) => {
-    const currentBlock = await walletProvider.wallet.provider.getBlockNumber();
+const transactionHistoryTool = tool(
+  async ({ address, duration, email }: { address: string; duration: number; email?: string }) => {
+    const currentBlock = await walletProvider.provider.getBlockNumber();
     const blocksPerDay = 7200; // approximate
     const fromBlock = currentBlock - (duration * blocksPerDay);
     
@@ -142,8 +142,15 @@ tools.push({
     }
     
     return `Transaction history PDF generated at ${pdfPath}`;
+  },
+  {
+    name: "generate_transaction_report",
+    description: "Generate a PDF report of transaction history and optionally email it",
+    schema: transactionHistorySchema,
   }
-});
+);
+
+tools.push(transactionHistoryTool);
 
     // Store buffered conversation history in memory
     const memory = new MemorySaver();
