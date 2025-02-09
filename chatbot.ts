@@ -13,7 +13,7 @@ import { tool } from "@langchain/core/tools";
 import { HumanMessage } from "@langchain/core/messages";
 import { MemorySaver } from "@langchain/langgraph";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
-import { ChatOpenAI } from "@langchain/openai";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import * as dotenv from "dotenv";
 import * as fs from "fs";
 import * as readline from "readline";
@@ -75,8 +75,10 @@ const WALLET_DATA_FILE = "wallet_data.txt";
 async function initializeAgent() {
   try {
     // Initialize LLM
-    const llm = new ChatOpenAI({
-      model: "gpt-4o-mini",
+    const llm = new ChatGoogleGenerativeAI({
+      modelName: "gemini-pro",
+      apiKey: process.env.GOOGLE_AI_API_KEY,
+      maxOutputTokens: 2048,
     });
 
     let walletDataStr: string | null = null;
