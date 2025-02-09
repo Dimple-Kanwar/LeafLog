@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="90" fill="#f0f9f0"/>
+  
+  <!-- Leaf shape -->
+  <path d="M100 40 C130 40, 160 70, 160 110 C160 150, 130 180, 100 180 C70 180, 40 150, 40 110 C40 70, 70 40, 100 40" 
+        fill="#4CAF50" opacity="0.9"/>
+  
+  <!-- Transaction lines representing veins -->
+  <path d="M100 60 L140 100 M100 80 L120 120 M100 100 L130 140" 
+        stroke="#2E7D32" stroke-width="3" stroke-linecap="round"/>
+  <path d="M100 60 L60 100 M100 80 L80 120 M100 100 L70 140" 
+        stroke="#2E7D32" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Central line -->
+  <path d="M100 40 L100 160" 
+        stroke="#2E7D32" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- Dots representing blockchain nodes -->
+  <circle cx="100" cy="60" r="4" fill="#1B5E20"/>
+  <circle cx="100" cy="100" r="4" fill="#1B5E20"/>
+  <circle cx="100" cy="140" r="4" fill="#1B5E20"/>
+</svg>

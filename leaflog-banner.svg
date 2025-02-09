@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
+  <!-- Background -->
+  <rect width="800" height="200" fill="#f8f9fa"/>
+  
+  <!-- Logo placement (scaled down version) -->
+  <g transform="translate(50,25) scale(0.75)">
+    <!-- Background circle -->
+    <circle cx="100" cy="100" r="90" fill="#f0f9f0"/>
+    
+    <!-- Leaf shape -->
+    <path d="M100 40 C130 40, 160 70, 160 110 C160 150, 130 180, 100 180 C70 180, 40 150, 40 110 C40 70, 70 40, 100 40" 
+          fill="#4CAF50" opacity="0.9"/>
+    
+    <!-- Transaction lines representing veins -->
+    <path d="M100 60 L140 100 M100 80 L120 120 M100 100 L130 140" 
+          stroke="#2E7D32" stroke-width="3" stroke-linecap="round"/>
+    <path d="M100 60 L60 100 M100 80 L80 120 M100 100 L70 140" 
+          stroke="#2E7D32" stroke-width="3" stroke-linecap="round"/>
+    
+    <!-- Central line -->
+    <path d="M100 40 L100 160" 
+          stroke="#2E7D32" stroke-width="4" stroke-linecap="round"/>
+    
+    <!-- Dots representing blockchain nodes -->
+    <circle cx="100" cy="60" r="4" fill="#1B5E20"/>
+    <circle cx="100" cy="100" r="4" fill="#1B5E20"/>
+    <circle cx="100" cy="140" r="4" fill="#1B5E20"/>
+  </g>
+  
+  <!-- Text "LeafLog" -->
+  <text x="250" y="120" font-family="Arial" font-size="72" font-weight="bold" fill="#2E7D32">LeafLog</text>
+  
+  <!-- Tagline -->
+  <text x="250" y="150" font-family="Arial" font-size="20" fill="#666">
+    Transaction History Made Simple
+  </text>
+  
+  <!-- Decorative elements -->
+  <path d="M650 50 Q700 100 650 150" stroke="#4CAF50" stroke-width="3" fill="none"/>
+  <path d="M670 60 Q720 100 670 140" stroke="#4CAF50" stroke-width="2" fill="none"/>
+  <path d="M690 70 Q740 100 690 130" stroke="#4CAF50" stroke-width="1" fill="none"/>
+  
+  <!-- Abstract blockchain representation -->
+  <g transform="translate(600,80)">
+    <rect x="0" y="0" width="30" height="30" rx="5" fill="#4CAF50" opacity="0.2"/>
+    <rect x="40" y="0" width="30" height="30" rx="5" fill="#4CAF50" opacity="0.3"/>
+    <rect x="80" y="0" width="30" height="30" rx="5" fill="#4CAF50" opacity="0.4"/>
+  </g>
+</svg>

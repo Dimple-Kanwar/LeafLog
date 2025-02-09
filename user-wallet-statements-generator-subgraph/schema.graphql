@@ -1,25 +1,19 @@
 type Token @entity {
   id: ID!
-  owner: Owner
-  transfers: [Transfer!]! @derivedFrom(field: "token")
-  contract: Contract
-}
-
-type Contract @entity {
-  # token address as id
-  id: ID!
   name: String
   symbol: String
+  decimal: String
 }
 
 type Transfer @entity {
   id: ID!
   token: Token!
-  # Empty from is minting
-  from: Owner
-  # Empty to is burning
-  to: Owner
+  tokenSymbol: String!
+  sender: String!
+  recipient: String!
   timestamp: BigInt!
   block: BigInt!
+  amount: BigInt!
   transactionHash: String!
+  chainId: Int!
 }
