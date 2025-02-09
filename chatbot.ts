@@ -34,7 +34,7 @@ function validateEnvironment(): void {
 
   // Check required variables
   const requiredVars = [
-    "OPENAI_API_KEY",
+    "GOOGLE_AI_API_KEY",
     "CDP_API_KEY_NAME",
     "CDP_API_KEY_PRIVATE_KEY",
   ];
