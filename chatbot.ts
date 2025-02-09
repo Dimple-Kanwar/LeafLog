@@ -19,6 +19,7 @@ import * as fs from "fs";
 import * as readline from "readline";
 import { TransactionHistoryService } from "./services/transactionHistory";
 import { z } from "zod";
+import { ethers } from "ethers";
 
 dotenv.config();
 
@@ -33,7 +34,7 @@ function validateEnvironment(): void {
 
   // Check required variables
   const requiredVars = [
-    "OPENAI_API_KEY",
+    "GOOGLE_AI_API_KEY",
     "CDP_API_KEY_NAME",
     "CDP_API_KEY_PRIVATE_KEY",
   ];
@@ -164,7 +165,10 @@ async function initializeAgent() {
         duration: number;
         email?: string;
       }) => {
-        const currentBlock = await walletProvider.
+        const provider = new ethers.JsonRpcProvider(config.networkId.includes("base")
+          ? "https://base-sepolia.g.alchemy.com/v2/demo"
+          : "https://eth-sepolia.g.alchemy.com/v2/demo");
+        const currentBlock = await provider.getBlockNumber();
         const blocksPerDay = 7200; // approximate
         const fromBlock = currentBlock - duration * blocksPerDay;
 

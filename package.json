@@ -61,6 +61,7 @@
     "@types/nodemailer": "^6.4.17",
     "@types/pdfkit": "^0.13.9",
     "dotenv": "^16.4.7",
+    "ethers": "^6.13.5",
     "langchain-xai": "^0.2.2",
     "nodemailer": "^6.10.0",
     "pdfkit": "^0.16.0",

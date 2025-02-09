@@ -19,14 +19,14 @@ export class TransactionHistoryService {
     });
     
     // Check for NFT transfers (ERC721/ERC1155) and token airdrops
-    const nftTransfers = transactions.filter(tx => 
+    const nftTransfers = transactions.filter((tx: any) => 
       tx.topics && (
         tx.topics[0] === '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef' || // ERC721
         tx.topics[0] === '0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62'    // ERC1155
       )
     );
     
-    const airdrops = transactions.filter(tx =>
+    const airdrops = transactions.filter((tx: any) =>
       tx.topics && tx.topics[0] === '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef' && // ERC20
       tx.topics[1] === '0x0000000000000000000000000000000000000000000000000000000000000000'      // From zero address
     );
